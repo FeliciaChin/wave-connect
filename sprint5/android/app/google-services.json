@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "27687376106",
+    "project_id": "wave-connect-27c69",
+    "storage_bucket": "wave-connect-27c69.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:27687376106:android:ad288e800420b4849f7393",
+        "android_client_info": {
+          "package_name": "com.utm.couchpotato"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "27687376106-rh5726dm4d779niccone923hqfhtn86n.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAhs-SQxE_QwZgF7enx6kXm9_dJcY74eaw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "27687376106-rh5726dm4d779niccone923hqfhtn86n.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
