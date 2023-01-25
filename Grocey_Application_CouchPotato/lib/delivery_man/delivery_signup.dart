@@ -32,7 +32,7 @@ class _DeliverySignupPageState extends State<DeliverySignupPage> {
     super.dispose();
   }
 
-  Future signUp() async {
+  Future<bool> DeliverySignupPage() async {
     //create user
     FirebaseAuth auth = FirebaseAuth.instance;
     try {
@@ -43,6 +43,7 @@ class _DeliverySignupPageState extends State<DeliverySignupPage> {
               password: _passwordController.text.trim(),
             )
             .then((result) => addUserDetails(
+               result.user,
                   _usernameController.text.trim(),
                   _phoneController.text.trim(),
                   _emailController.text.trim(),
@@ -97,9 +98,9 @@ class _DeliverySignupPageState extends State<DeliverySignupPage> {
     }
   }
 
-  Future addUserDetails(String userName, String userPhone, String email,
+  Future addUserDetails(User? user, String userName, String userPhone, String email,
       String password, String platNumber, String vehicles) async {
-    await FirebaseFirestore.instance.collection('deliveryMan').add({
+    await FirebaseFirestore.instance.collection('deliveryMan').doc(user?.uid).set({
       'deliveryName': userName,
       'deliveryPhone': userPhone,
       'deliveryPassword': password,
@@ -233,7 +234,7 @@ class _DeliverySignupPageState extends State<DeliverySignupPage> {
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12.0)),
                       onPressed: () {
-                        signUp().then((value) {
+                        DeliverySignupPage().then((value) {
                           if (value) {
                             showDialog(
                                 context: context,
@@ -257,7 +258,7 @@ class _DeliverySignupPageState extends State<DeliverySignupPage> {
                                 }).then((value) => Navigator.pushReplacement(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => HomePage()),
+                                      builder: (context) => DeliveryLogIn()),
                                 ));
                           }
                         });
