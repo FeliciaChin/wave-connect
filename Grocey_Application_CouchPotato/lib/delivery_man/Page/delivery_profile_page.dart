@@ -28,6 +28,11 @@ class _DeliveryProfilePageState extends State<DeliveryProfilePage> {
   String myPhone = "";
   String myVehicles = "";
 
+  String updName = "";
+  String updPhone = "";
+  String updPlatNumber = "";
+  String updVehicle = "";
+
   bool isObscurePassword = true;
   final firebaseUser = FirebaseAuth.instance.currentUser;
 
@@ -117,14 +122,17 @@ class _DeliveryProfilePageState extends State<DeliveryProfilePage> {
                           textAlign: TextAlign.center,
                         ),
                         SizedBox(height: 35),
-                        buildTextField(
-                            _nameController, "Full Name", "$myName", false),
+                        buildTextField(_nameController, "Full Name",
+                            _nameController.text = "$myName", false),
                         buildTextField(_phoneController, "Phone Number",
-                            "$myPhone", false),
-                        buildTextField(_platNumberController, "Plat Number",
-                            "$myPlatNumber", false),
+                            _phoneController.text = "$myPhone", false),
+                        buildTextField(
+                            _platNumberController,
+                            "Plat Number",
+                            _platNumberController.text = "$myPlatNumber",
+                            false),
                         buildTextField(_vehiclesController, "Vehicle",
-                            "$myVehicles", false),
+                            _vehiclesController.text = "$myVehicles", false),
                         SizedBox(height: 10),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -143,12 +151,17 @@ class _DeliveryProfilePageState extends State<DeliveryProfilePage> {
                             ),
                             ElevatedButton(
                               onPressed: () {
-                                var updName = _nameController.text;
-                                var updPhone = _phoneController.text;
-                                var updPlatNumber = _platNumberController.text;
-                                var updVehicle = _vehiclesController.text;
-                                _updateData(
-                                    updName, updPhone, updPlatNumber, updVehicle);
+                                updName = _nameController.text;
+                                updPhone = _phoneController.text;
+                                updPlatNumber = _platNumberController.text;
+                                updVehicle = _vehiclesController.text;
+                                _updateData(updName, updPhone, updPlatNumber,
+                                    updVehicle);
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => DeliveryProfilePage()),
+                                );
                               },
                               child: Text('SAVE',
                                   style: TextStyle(
@@ -210,7 +223,25 @@ class _DeliveryProfilePageState extends State<DeliveryProfilePage> {
         myPhone = ds.data()!['deliveryPhone'];
         myVehicles = ds.data()!['deliveryVehicles'];
       }).catchError((e) {
-        print(e);
+        showDialog(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                title: const Text(
+                  'Retrieve data Failure',
+                  style: TextStyle(color: Colors.red),
+                ),
+                content: Text(e.toString()),
+                actions: <Widget>[
+                  TextButton(
+                    child: const Text('OK'),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ],
+              );
+            });
       });
     }
   }
@@ -219,15 +250,106 @@ class _DeliveryProfilePageState extends State<DeliveryProfilePage> {
       String updatePlatNumber, String updateVehicle) async {
     final firebaseUser = FirebaseAuth.instance.currentUser;
     if (firebaseUser != null) {
-      await FirebaseFirestore.instance
-          .collection('deliveryMan')
-          .doc(firebaseUser.uid)
-          .update({
-        'deliveryName': updateName,
-        'deliveryPhone': updatePhone,
-        'deliveryPlatNumber': updatePlatNumber,
-        'deliveryVehicles': updateVehicle
-      }).then((result) => print('Added successfully'));
+      if (myName != updateName) {
+        await FirebaseFirestore.instance
+            .collection('deliveryMan')
+            .doc(firebaseUser.uid)
+            .update({
+          'deliveryName': updateName,
+        }).then((result) => showDialog(
+                context: context,
+                builder: (context) {
+                  return AlertDialog(
+                    title: const Text(
+                      'Update Username Successfully',
+                      style: TextStyle(color: Color.fromARGB(255, 63, 232, 63)),
+                    ),
+                    actions: <Widget>[
+                      TextButton(
+                        child: const Text('OK'),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                    ],
+                  );
+                }));
+      }
+      if (myPhone != updatePhone) {
+        await FirebaseFirestore.instance
+            .collection('deliveryMan')
+            .doc(firebaseUser.uid)
+            .update({
+          'deliveryPhone': updatePhone,
+        }).then((result) => showDialog(
+                context: context,
+                builder: (context) {
+                  return AlertDialog(
+                    title: const Text(
+                      'Update Phone Number Successfully',
+                      style: TextStyle(color: Color.fromARGB(255, 63, 232, 63)),
+                    ),
+                    actions: <Widget>[
+                      TextButton(
+                        child: const Text('OK'),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                    ],
+                  );
+                }));
+      }
+      if (myPlatNumber != updatePlatNumber) {
+        await FirebaseFirestore.instance
+            .collection('deliveryMan')
+            .doc(firebaseUser.uid)
+            .update({
+          'deliveryPlatNumber': updatePlatNumber,
+        }).then((result) => showDialog(
+                context: context,
+                builder: (context) {
+                  return AlertDialog(
+                    title: const Text(
+                      'Update Plat Number Successfully',
+                      style: TextStyle(color: Color.fromARGB(255, 63, 232, 63)),
+                    ),
+                    actions: <Widget>[
+                      TextButton(
+                        child: const Text('OK'),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                    ],
+                  );
+                }));
+      }
+      if (myVehicles != updateVehicle) {
+        await FirebaseFirestore.instance
+            .collection('deliveryMan')
+            .doc(firebaseUser.uid)
+            .update({
+          'deliveryVehicles': updateVehicle,
+        }).then((result) => showDialog(
+                context: context,
+                builder: (context) {
+                  return AlertDialog(
+                    title: const Text(
+                      'Update Vehicle Types Successfully',
+                      style: TextStyle(color: Color.fromARGB(255, 63, 232, 63)),
+                    ),
+                    actions: <Widget>[
+                      TextButton(
+                        child: const Text('OK'),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                    ],
+                  );
+                }));
+      }
     }
   }
 
