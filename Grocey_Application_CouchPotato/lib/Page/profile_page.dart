@@ -150,6 +150,11 @@ class _ProfilePageState extends State<ProfilePage> {
                                 updAddress = _addressController.text;
 
                                 _updateData(updName, updPhone, updAddress);
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => ProfilePage()),
+                                );
                               },
                               child: Text('SAVE',
                                   style: TextStyle(
